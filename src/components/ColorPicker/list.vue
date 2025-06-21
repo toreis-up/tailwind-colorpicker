@@ -10,6 +10,8 @@
 const minColors = 1;
 const maxColors = 11;
 
+let nextColorId = 1;
+
 const colors = defineModel({
   type: Array<{ id: number, hex: string, step: string }>,
   required: true
@@ -21,7 +23,7 @@ function addColor() {
     return;
   }
   colors.value.push({
-    id: colors.value.length+1,
+    id: nextColorId+1,
     hex: '#000000',
     step: 'auto'
   });
@@ -33,5 +35,6 @@ function removeColor(colorId: number) {
     return;
   }
   colors.value = colors.value.filter(color => color.id !== colorId);
+  nextColorId -= 1;
 }
 </script>

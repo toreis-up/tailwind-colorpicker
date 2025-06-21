@@ -7,5 +7,5 @@ import { STEP_OPTIONS } from "~/types/step";
 
 const options = ref(STEP_OPTIONS);
 
-const selectMode = defineModel(undefined);
+const selectMode = defineModel<string>();
 </script>

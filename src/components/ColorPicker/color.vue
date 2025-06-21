@@ -75,19 +75,15 @@ function applyTextColor() {
   if (chroma.valid(textColor.value)) {
     const colorStr = textColor.value ?? '';
     const color = chroma(colorStr).hex();
-    console.log('Applying text color:', color);
     paletteColor.value = color;
     textColor.value = color;
   } else {
     // 不正な場合は元に戻す
     textColor.value = paletteColor.value
   }
-
-  console.log('Applied text color:', paletteColor.value);
 }
 
 watch(paletteColor, (newColor) => {
-  console.log('Palette color changed:',textColor.value,'→', newColor);
   textColor.value = newColor;
 });
 </script>
