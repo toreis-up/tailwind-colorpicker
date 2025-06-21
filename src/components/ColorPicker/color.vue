@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center gap-2 p-2">
-    <UBadge ref="previewRef" :style="chip" class="size-6 rounded" @mousedown="open = true" />
+    <UiBadge ref="previewRef" :color="paletteColor" @mousedown="open = true" />
     <UPopover
     :open="open"
     :dismissible="false"
@@ -34,8 +34,6 @@ const paletteRef = ref();
 const previewRef = ref();
 
 let paletteClicked = false;
-
-const chip = computed(() => ({ backgroundColor: paletteColor.value }))
 
 function onPaletteMouseDown() {
   paletteClicked = true;
