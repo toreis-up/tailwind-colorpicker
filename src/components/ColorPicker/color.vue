@@ -22,7 +22,7 @@
 <script lang="ts" setup>
 import chroma from 'chroma-js';
 
-const color = defineModel<string>(undefined)
+const color = defineModel<string>()
 
 const paletteColor = ref(color);
 const textColor = ref(color);

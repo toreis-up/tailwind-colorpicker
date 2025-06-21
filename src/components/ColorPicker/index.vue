@@ -18,5 +18,5 @@ function remove() {
 }
 
 const color = defineModel<string>("color");
-const step = defineModel<string>("step");
+const step = defineModel<string | number>("step");
 </script>

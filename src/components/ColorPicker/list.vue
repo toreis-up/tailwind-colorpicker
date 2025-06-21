@@ -3,7 +3,7 @@
     <UButton :disabled="colors.length === maxColors" class="mt-2" @click="addColor">
       追加
     </UButton>
-    <ColorPicker v-for="color in colors" :key="color.id" :color="color.hex" :step="color.step" @remove="removeColor(color.id)"/>
+    <ColorPicker v-for="color in colors" :key="color.id" v-model:color="color.hex" v-model:step="color.step" @remove="removeColor(color.id)"/>
   </div>
 </template>
 <script lang="ts" setup>
