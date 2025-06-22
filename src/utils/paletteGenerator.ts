@@ -190,7 +190,7 @@ export function renderResult({
   stepKeys.forEach((stepKey) => {
     const hex = paletteObj[stepKey];
     if (hex) {
-      cssOutput += `    --color-${paletteName}-${stepKey}: ${hex};\n`;
+      cssOutput += `    --color-${paletteName}-${stepKey}: ${hex.toUpperCase()};\n`;
     }
   });
   cssOutput += "  }\n";
