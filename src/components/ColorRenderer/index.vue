@@ -19,9 +19,6 @@ const colors = computed(() =>
   Object.entries(props.colors)
     .sort(([a], [b]) => Number(a) - Number(b))
     .map(([step, hex]) => [step, hex])
-    .reduce((acc, [step, hex]) => {
-      acc.push({ id: Number(step), hex });
-      return acc;
-    }, [] as { id: number; hex: string }[])
+    .map(([step, hex]) => ({ id: Number(step), hex }))
 );
 </script>
