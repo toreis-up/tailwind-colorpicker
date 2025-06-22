@@ -24,8 +24,8 @@ import chroma from 'chroma-js';
 
 const color = defineModel<string>()
 
-const paletteColor = ref(color);
-const textColor = ref(color);
+const paletteColor = ref(color.value);
+const textColor = ref(color.value);
 
 const open = ref(false)
 
@@ -73,17 +73,22 @@ onBeforeUnmount(() => {
 
 function applyTextColor() {
   if (chroma.valid(textColor.value)) {
-    const colorStr = textColor.value ?? '';
-    const color = chroma(colorStr).hex();
-    paletteColor.value = color;
-    textColor.value = color;
+    const hexStr = textColor.value ?? '';
+    const hex = chroma(hexStr).hex();
+    paletteColor.value = hex;
+    textColor.value = hex;
+    color.value = hex;
   } else {
     // 不正な場合は元に戻す
-    textColor.value = paletteColor.value
+    // textColor.value = paletteColor.value
   }
 }
 
 watch(paletteColor, (newColor) => {
+  if (!chroma.valid(newColor)) {
+    return;
+  }
+  color.value = newColor;
   textColor.value = newColor;
 });
 </script>
