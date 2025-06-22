@@ -38,7 +38,7 @@ export function generatePalette(baseList: ColorElement[]) {
     const K = freeArr.length;
     if (K < M)
       throw new Error(
-        `空きステップが不足しています（指定色 ${specified.length} + 自動 ${M} > 11）。`
+        `空きステップが不足しています（指定色 ${specified.length} + 自動 ${M} > ${STEP_KEYS.length}）。`
       );
 
     const freeArrCopy = [...freeArr];
