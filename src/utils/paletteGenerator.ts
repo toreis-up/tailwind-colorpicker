@@ -136,3 +136,99 @@ export function generatePalette(baseList: ColorElement[]) {
   });
   return result;
 }
+
+export interface Palette {
+  [step: number]: string;
+}
+
+export interface RenderResultOptions {
+  paletteObj: Palette;
+  paletteName: string;
+  stepKeys?: (number | string)[];
+}
+
+export interface RenderedPaletteResult {
+  preview: {
+    step: number | string;
+    hex: string;
+    hsl: string;
+  }[];
+  css: string;
+  tailwindConfig: string;
+  combined: string;
+}
+
+/**
+ * パレット生成結果を整形して返す
+ */
+export function renderResult({
+  paletteObj,
+  paletteName,
+  stepKeys = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950],
+}: RenderResultOptions): RenderedPaletteResult {
+  // プレビュー用データ
+  const preview = stepKeys
+    .map((stepKey) => {
+      const hex = paletteObj[stepKey];
+      if (!hex) return null;
+      const [hVal, sVal, lVal] = chroma(hex).hsl();
+      const h = isNaN(hVal) ? 0 : Math.round(hVal);
+      const s = Math.round(sVal * 100);
+      const l = Math.round(lVal * 100);
+      const hslString = `hsl(${h}, ${s}%, ${l}%)`;
+      return {
+        step: stepKey,
+        hex: hex.toUpperCase(),
+        hsl: hslString,
+      };
+    })
+    .filter(Boolean) as { step: number | string; hex: string; hsl: string }[];
+
+  // CSSカスタムプロパティ
+  let cssOutput = "@layer base {\n";
+  cssOutput += "  :root {\n";
+  stepKeys.forEach((stepKey) => {
+    const hex = paletteObj[stepKey];
+    if (hex) {
+      cssOutput += `    --color-${paletteName}-${stepKey}: ${hex.toUpperCase()};\n`;
+    }
+  });
+  cssOutput += "  }\n";
+  cssOutput += "}\n";
+
+  // tailwind.config.js用コメント
+  const tailwindConfigLines = [
+    `\n\n/*`,
+    `  上記をCSSファイル (例: main.css) に貼り付けた後、`,
+    `  tailwind.config.js で以下のようにこのパレット ('${paletteName}') を利用できます：\n`,
+    `  // tailwind.config.js`,
+    `  export default {`,
+    `    theme: {`,
+    `      extend: {`,
+    `        colors: {`,
+    `          ${paletteName}: {`,
+  ];
+  stepKeys.forEach((stepKey) => {
+    if (paletteObj[stepKey]) {
+      tailwindConfigLines.push(
+        `            ${stepKey}: 'rgb(var(--color-${paletteName}-${stepKey}) / <alpha-value>)',`
+      );
+    }
+  });
+  tailwindConfigLines.push(
+    `          }`,
+    `        }`,
+    `      }`,
+    `    }`,
+    `  }`,
+    `*/`
+  );
+  const tailwindConfigComment = tailwindConfigLines.join("\n");
+
+  return {
+    preview,
+    css: cssOutput,
+    tailwindConfig: tailwindConfigComment,
+    combined: cssOutput + tailwindConfigComment,
+  };
+}
