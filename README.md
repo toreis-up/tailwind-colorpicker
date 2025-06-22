@@ -1,75 +1,48 @@
-# Nuxt Minimal Starter
+# Tailwind Colorpicker
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+An interactive tool for creating custom Tailwind CSS color palettes. Built with [Nuxt 3](https://nuxt.com/) and TypeScript.
 
-## Setup
+## Features
 
-Make sure to install dependencies:
+- Pick base colors and assign them to Tailwind color steps
+- Automatic distribution of colors for unspecified steps
+- Preview generated palettes in your browser
+- Copy CSS custom properties and a Tailwind configuration snippet
+
+## Requirements
+
+- Node.js 18 or later
+- Yarn (or your preferred package manager)
+
+## Getting Started
+
+Install dependencies and start the development server:
 
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
 yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
 yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+The app will be available at `http://localhost:3000`.
 
-Build the application for production:
+## Building for Production
+
+Create an optimized build:
 
 ```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
 yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+Preview the production build locally:
 
 ```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
 yarn preview
-
-# bun
-bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Contributing
+
+Contributions are welcome! Feel free to open issues or submit pull requests.
+
+## License
+
+Released under the MIT License.
