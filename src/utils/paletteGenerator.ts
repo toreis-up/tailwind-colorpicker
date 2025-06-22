@@ -197,31 +197,33 @@ export function renderResult({
   cssOutput += "}\n";
 
   // tailwind.config.js用コメント
-  let tailwindConfigComment = `\n\n/*\n`;
-  tailwindConfigComment += `  上記をCSSファイル (例: main.css) に貼り付けた後、\n`;
-  tailwindConfigComment += `  tailwind.config.js で以下のようにこのパレット ('${paletteName}') を利用できます：\n\n`;
-  tailwindConfigComment += `  // tailwind.config.js\n`;
-  tailwindConfigComment += `  export default {\n`;
-  tailwindConfigComment += `    theme: {\n`;
-  tailwindConfigComment += `      extend: {\n`;
-  tailwindConfigComment += `        colors: {\n`;
-  tailwindConfigComment += `          ${paletteName}: {\n`;
+  const tailwindConfigLines = [
+    `\n\n/*`,
+    `  上記をCSSファイル (例: main.css) に貼り付けた後、`,
+    `  tailwind.config.js で以下のようにこのパレット ('${paletteName}') を利用できます：\n`,
+    `  // tailwind.config.js`,
+    `  export default {`,
+    `    theme: {`,
+    `      extend: {`,
+    `        colors: {`,
+    `          ${paletteName}: {`,
+  ];
   stepKeys.forEach((stepKey) => {
     if (paletteObj[stepKey]) {
-      tailwindConfigComment += `            ${stepKey}: 'rgb(var(--color-${paletteName}-${stepKey}) / <alpha-value>)',\n`;
+      tailwindConfigLines.push(
+        `            ${stepKey}: 'rgb(var(--color-${paletteName}-${stepKey}) / <alpha-value>)',`
+      );
     }
   });
-  if (tailwindConfigComment.endsWith(",\n")) {
-    tailwindConfigComment =
-      tailwindConfigComment.substring(0, tailwindConfigComment.length - 2) +
-      "\n";
-  }
-  tailwindConfigComment += `          }\n`;
-  tailwindConfigComment += `        }\n`;
-  tailwindConfigComment += `      }\n`;
-  tailwindConfigComment += `    }\n`;
-  tailwindConfigComment += `  }\n`;
-  tailwindConfigComment += `*/`;
+  tailwindConfigLines.push(
+    `          }`,
+    `        }`,
+    `      }`,
+    `    }`,
+    `  }`,
+    `*/`
+  );
+  const tailwindConfigComment = tailwindConfigLines.join("\n");
 
   return {
     preview,
