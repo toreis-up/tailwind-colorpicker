@@ -136,3 +136,97 @@ export function generatePalette(baseList: ColorElement[]) {
   });
   return result;
 }
+
+export interface Palette {
+  [step: number]: string;
+}
+
+export interface RenderResultOptions {
+  paletteObj: Palette;
+  paletteName: string;
+  stepKeys?: (number | string)[];
+}
+
+export interface RenderedPaletteResult {
+  preview: {
+    step: number | string;
+    hex: string;
+    hsl: string;
+  }[];
+  css: string;
+  tailwindConfig: string;
+  combined: string;
+}
+
+/**
+ * パレット生成結果を整形して返す
+ */
+export function renderResult({
+  paletteObj,
+  paletteName,
+  stepKeys = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950],
+}: RenderResultOptions): RenderedPaletteResult {
+  // プレビュー用データ
+  const preview = stepKeys
+    .map((stepKey) => {
+      const hex = paletteObj[stepKey];
+      if (!hex) return null;
+      const [hVal, sVal, lVal] = chroma(hex).hsl();
+      const h = isNaN(hVal) ? 0 : Math.round(hVal);
+      const s = Math.round(sVal * 100);
+      const l = Math.round(lVal * 100);
+      const hslString = `hsl(${h}, ${s}%, ${l}%)`;
+      return {
+        step: stepKey,
+        hex: hex.toUpperCase(),
+        hsl: hslString,
+      };
+    })
+    .filter(Boolean) as { step: number | string; hex: string; hsl: string }[];
+
+  // CSSカスタムプロパティ
+  let cssOutput = "@layer base {\n";
+  cssOutput += "  :root {\n";
+  stepKeys.forEach((stepKey) => {
+    const hex = paletteObj[stepKey];
+    if (hex) {
+      cssOutput += `    --color-${paletteName}-${stepKey}: ${hex};\n`;
+    }
+  });
+  cssOutput += "  }\n";
+  cssOutput += "}\n";
+
+  // tailwind.config.js用コメント
+  let tailwindConfigComment = `\n\n/*\n`;
+  tailwindConfigComment += `  上記をCSSファイル (例: main.css) に貼り付けた後、\n`;
+  tailwindConfigComment += `  tailwind.config.js で以下のようにこのパレット ('${paletteName}') を利用できます：\n\n`;
+  tailwindConfigComment += `  // tailwind.config.js\n`;
+  tailwindConfigComment += `  export default {\n`;
+  tailwindConfigComment += `    theme: {\n`;
+  tailwindConfigComment += `      extend: {\n`;
+  tailwindConfigComment += `        colors: {\n`;
+  tailwindConfigComment += `          ${paletteName}: {\n`;
+  stepKeys.forEach((stepKey) => {
+    if (paletteObj[stepKey]) {
+      tailwindConfigComment += `            ${stepKey}: 'rgb(var(--color-${paletteName}-${stepKey}) / <alpha-value>)',\n`;
+    }
+  });
+  if (tailwindConfigComment.endsWith(",\n")) {
+    tailwindConfigComment =
+      tailwindConfigComment.substring(0, tailwindConfigComment.length - 2) +
+      "\n";
+  }
+  tailwindConfigComment += `          }\n`;
+  tailwindConfigComment += `        }\n`;
+  tailwindConfigComment += `      }\n`;
+  tailwindConfigComment += `    }\n`;
+  tailwindConfigComment += `  }\n`;
+  tailwindConfigComment += `*/`;
+
+  return {
+    preview,
+    css: cssOutput,
+    tailwindConfig: tailwindConfigComment,
+    combined: cssOutput + tailwindConfigComment,
+  };
+}
