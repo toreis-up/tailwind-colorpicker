@@ -23,7 +23,7 @@ function addColor() {
     return;
   }
   colors.value.push({
-    id: nextColorId++,
+    id: ++nextColorId,
     hex: '#000000',
     step: 'auto'
   });
@@ -35,6 +35,5 @@ function removeColor(colorId: number) {
     return;
   }
   colors.value = colors.value.filter(color => color.id !== colorId);
-  nextColorId -= 1;
 }
 </script>
