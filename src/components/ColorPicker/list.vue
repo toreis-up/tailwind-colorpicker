@@ -23,7 +23,7 @@ function addColor() {
     return;
   }
   colors.value.push({
-    id: nextColorId+1,
+    id: nextColorId++,
     hex: '#000000',
     step: 'auto'
   });
