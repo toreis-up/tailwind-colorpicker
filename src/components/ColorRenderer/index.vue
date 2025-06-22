@@ -1,6 +1,6 @@
 <template>
-  <div class="flex items-center gap-2 p-2">
-    <div v-for="color in colors" :key="color.id">
+  <div class="grid grid-cols-11 gap-x-1 my-4">
+    <div v-for="color in colors" :key="color.id" class="flex flex-col items-center">
       <div>
         <UiBadge :color="color.hex" :size="14" />
       </div>
