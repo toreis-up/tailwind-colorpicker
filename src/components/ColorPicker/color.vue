@@ -10,7 +10,7 @@
       sideOffset: 8,
     }" :ui="{ content: 'w-(--reka-popper-anchor-width) p-4' }">
       <template #anchor>
-        <UInput ref="inputRef" v-model="textColor" type="text" @focus="open = true" @blur="onInputBlur"/>
+        <UiInput ref="inputRef" v-model="textColor" type="text" @focus="open = true" @blur="onInputBlur"/>
       </template>
 
       <template #content>
