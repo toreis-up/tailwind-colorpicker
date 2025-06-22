@@ -1,5 +1,5 @@
 <template>
-  <UTextarea v-model="paletteText" class="w-100" readonly>
+  <UTextarea :model-value="paletteText" class="w-100" readonly>
     <template #trailing>
       <UTooltip text="Copy to clipboard" :content="{ side: 'right' }">
         <UButton
