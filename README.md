@@ -11,7 +11,7 @@ An interactive tool for creating custom Tailwind CSS color palettes. Built with 
 
 ## Requirements
 
-- Node.js 18 or later
+- Node.js 20 or later
 - Yarn (or your preferred package manager)
 
 ## Getting Started
